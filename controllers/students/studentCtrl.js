@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Subject = require("../../models/adminModels/Subject");
+const Assignment = require("../../models/Assignment");
 
 const studentController = {
    
@@ -46,6 +47,28 @@ const studentController = {
             teachersInfo
         })
     }),
+
+    // get all assigmnets
+    getAssignment: asyncHandler(async(req, res)=> {
+        const enrolledCourses = await Subject.find({
+            students: { $elemMatch: { studentId: req.user } } 
+        }).select("_id")
+        if(enrolledCourses.length === 0){
+            throw new Error("No Enrolled coursee please enroll for courses");
+        }
+
+        const subjectIds = enrolledCourses.map(s => s._id);
+        const assignments = await Assignment.find({SubjectId: {$in: subjectIds}})
+
+        if(assignments.length === 0 ) throw new Error("No assignment present");
+
+        res.status(200).json({
+            message: "Assignments fetched successfully",
+            assignments
+        })
+    }),
+
+    // submit the assignments
 
     addTask: asyncHandler(async()=> {})
     

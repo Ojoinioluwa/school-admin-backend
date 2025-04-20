@@ -36,6 +36,7 @@ const assignmentSchema = new mongoose.Schema({
     submittedStudents: [{
         studentID:{
             type: mongoose.Schema.Types.ObjectId,
+            ref: "Student"
         },
         assignmentDoc: {
             type: String,
@@ -43,7 +44,11 @@ const assignmentSchema = new mongoose.Schema({
     }]
 
 
-})
+},
+{
+    timestamps: true
+}
+)
 
 
-modules.exports = mongoose.model("Assignment", assignmentSchema);
+module.exports = mongoose.model("Assignment", assignmentSchema);
