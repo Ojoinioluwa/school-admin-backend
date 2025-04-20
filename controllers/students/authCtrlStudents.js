@@ -124,7 +124,7 @@ const StudentUserControl = {
     }),
 
     viewInfo: async(async(req,res)=> {
-        const user = await Student.findById(req.user);
+        const user = await Student.findById(req.user).select("-password");
 
         if(!user){
             throw new Error("user information not found. Plese try again later");

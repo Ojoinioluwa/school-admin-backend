@@ -41,11 +41,11 @@ const studentsAttendanceSchema = new mongoose.Schema({
     trim: true
   },
 
-  timestamp: {
-    type: Date,
-    default: Date.now
-  }
-});
+ },
+ {
+  timestamps: true
+ }
+);
 
 attendanceSchema.index({ student: 1, date: 1, subject: 1 }, { unique: true });
 

@@ -45,6 +45,9 @@ const studentController = {
         res.status(200).json({
             teachersInfo
         })
-    })
+    }),
+
+    addTask: asyncHandler(async()=> {})
+    
 
 }
