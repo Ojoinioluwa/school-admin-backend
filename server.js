@@ -5,9 +5,9 @@ const errorHandler = require("./middlewares/errorHandler");
 
 const app = express()
 const PORT = 8080
-const URI = "mongodb+srv://ojoinioluwa05:owobCi68qHHWKbQG@oay.vupnvf7.mongodb.net/schooolAdmin"
 
-mongoose.connect(URI)
+
+mongoose.connect(process.env.MONGODB_URI)
     .then(()=> console.log("Database connected succesfully"))
     .catch((err)=> console.log(err))
 
