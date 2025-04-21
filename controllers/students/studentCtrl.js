@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Subject = require("../../models/adminModels/Subject");
 const Assignment = require("../../models/Assignment");
+const Level = require("../../models/adminModels/Level");
+const TeachersAnnouncement = require("../../models/teachersModels.js/TeachersAnnouncement");
 
 const studentController = {
    
@@ -76,8 +78,29 @@ const studentController = {
     }),
 
     addTask: asyncHandler(async(req,res)=> {
-        const {title, description, statsus, priority,} = req.body
+        const {title, description, status, priority,} = req.body
+        if(!title || !description){
+            throw new Error()
+        }
+    }),
+
+    getTeachersAnnoucement: asyncHandler(async(req,res)=> {
+        const getCourses = await Level.find({student: {$elemMatch: {studentId: req.user}}}).select("_id").lean();
+        if(getCourses.length === 0) {
+            res.status(404)
+            throw new Error("Courses not found for the student");
+        }
+        const classId = getCourses.map((course)=> course._id)
+        const annoucements = await TeachersAnnouncement.find({classId: {$in: classId}}).sort({date: -1}).lean();
+        if(annoucements.length === 0){
+            res.status(404)
+            throw new Error("No Annoucement yet");
+        }
+        res.status(200).json({
+            message: "Fetched Annoucements Successfully",
+            annoucements
+        })
     })
-    
+    // TODO: Pagination
 
 }

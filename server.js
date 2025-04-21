@@ -13,8 +13,8 @@ mongoose.connect(URI)
 
 
 
-// make use of all middlewares here
-app.use(express.json());
+   // make use of all middlewares here
+   app.use(express.json());
 
 
 
