@@ -69,8 +69,15 @@ const studentController = {
     }),
 
     // submit the assignments
+    submitAssignment: asyncHandler(async(req, res)=> {
+        const {assignmentDoc} = req.body;
+        if(!assignmentDoc) throw new Error("Need to submit the docs to be able to submit");
 
-    addTask: asyncHandler(async()=> {})
+    }),
+
+    addTask: asyncHandler(async(req,res)=> {
+        const {title, description, statsus, priority,} = req.body
+    })
     
 
 }

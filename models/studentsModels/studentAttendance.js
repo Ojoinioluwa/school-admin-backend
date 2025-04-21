@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const studentsAttendanceSchema = new mongoose.Schema({
-  student: {
+  studentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: true
   },
 
-  classLevel: {
+  classId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Level',
     required: true
@@ -31,14 +31,9 @@ const studentsAttendanceSchema = new mongoose.Schema({
     required: true
   },
 
-  subject: {
-    type: String,
+  subjectId: {
+    type: mongoose.Schema.Types.ObjectId,
     default: null
-  },
-
-  remarks: {
-    type: String, 
-    trim: true
   },
 
  },

@@ -101,8 +101,6 @@ const teacherUserController = {
         if(!teacher){
             throw new Error("Teacher not found");
         }
-
-
         res.status(200).json(teacher);
     }),
     updateProfile: asyncHandler(async(req,res)=> {
