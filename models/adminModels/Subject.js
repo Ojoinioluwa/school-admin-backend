@@ -30,6 +30,14 @@ const subjectSchema = new mongoose.Schema({
     year: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    material: {
+        type:String,
+        required: false
     }
 },
 {

@@ -36,5 +36,33 @@ const AdminUser = require("../../models/adminModels/AdminUser");
 
     }),
 
-    register: asyncHandler
+    register: asyncHandler(async(req,res)=> {
+        const {firstName, lastName, email, phone,gender, dateOfBirth,address, profileImage, password } = req.body
+        if(!firstName || !lastName || !email || !phone || !gender || !dateOfBirth || !address ||!profileImage || !password){
+            throw new Error("Fill all required Fields");
+        }
+        const adminExist = await ExistUser.findOne({email});
+        if(adminExist){
+            throw new Error("Admin already exisit in the database");
+        }
+        const salt =  await bcrypt.genSalt(10);
+        const hashedPassword =  await bcrypt.hash(password, salt)
+        const admin = await AdminUser.create({
+            firstName, 
+            lastName, 
+            email, 
+            phone,
+            gender,
+            dateOfBirth,
+            address, 
+            profileImage, 
+            password: hashedPassword,
+        })
+        res.status(200).json({
+            message: "admin created Successfully",
+        })
+    })
   };
+
+
+

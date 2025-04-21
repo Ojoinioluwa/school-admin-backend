@@ -53,7 +53,19 @@ const teacherUserController = {
 
         res.status(200).json({
             message: "Teacher created Successfully",
-            teacher
+            teacher: {
+                firstName: teacher.firstName, 
+                lastName: teacher.lastName, 
+                email: teacher.email, 
+                phone: teacher.phone, 
+                gender: teacher.gender, 
+                department: teacher.department, 
+                dateOfBirth: teacher.dateOfBirth,
+                address: teacher.address, 
+                profileImage: teacher.profileImage, 
+                yearsOfExperience: teacher.yearsOfExperience,
+                staffId: teacher.staffId
+            }
         })
 
     }),

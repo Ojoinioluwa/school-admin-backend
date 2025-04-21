@@ -31,5 +31,16 @@ const taskController = {
         }),
         filterTask: asyncHandler(async(req, res)=> {
             const filters = {studentId: req.user};
+
+        }),
+        deleteTask: asyncHandler(async(req,res)=> {
+            const {taskId} = req.params;
+            if(!taskId){
+                throw new Error("Must select a task to be deleted");
+            }
+            await Task.findByIdAndDelete(taskId);
+            res.json({
+                message: "Task as been  delted successfully"
+            })
         })
 }

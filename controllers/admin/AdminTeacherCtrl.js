@@ -1,13 +1,28 @@
 const mongoose = requjire("mongoose");
 const asyncHandler = require("express-async-handler");
 const { nanoid } = require("nanoid");
+const Teacher = require("../../models/teachersModels.js/Teacher");
+const Student = require("../../models/studentsModels/Student");
 
 const adminTeacherSchema = {
-    createTeacher: asyncHandler(async(req,res)=> {
-        const {firstName, lastName, dateOfBirth,department, gender, email, phone } = req.body;
-        const staffId = nanoid(8)
-        if(!firstName || !lastName || !dateOfBirth || !department || !gender || !email || !phone){
-            throw new Error("All required credentials are required to create a Teacher")
-        }
-    })
+    filterTeachers: asyncHandler(async(req,res)=> {
+        const {department, gender} = req.query
+
+        const filters = {}
+
+        if(department) filters.department = department
+
+        if(gender) filters.gender = gender;
+
+        const teachers = await Teacher.find(filters).lean()
+
+        res.status(200).json({
+            message: "teachers Fetched Successfully",
+            teachers
+        })
+    }),
+
+
 }
+
+module.exports = adminTeacherSchema
