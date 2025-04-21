@@ -80,7 +80,7 @@ const teacherUserController = {
         }
 
          // create a token for the user using jsonwebtoken
-         const token = jwt.sign({id: teacher._id}, "OjayKey", {expiresIn: "3d"});
+         const token = jwt.sign({id: teacher._id, role: teacher.role}, "OjayKey", {expiresIn: "3d"});
 
          res.json({
             message: "User logged in successfully",
@@ -89,7 +89,8 @@ const teacherUserController = {
                 _id: teacher._id,
                 firstName: teacher.firstName,
                 lastName: teacher.lastName,
-                email
+                email,
+                role: teacher.role
             }
          })
 

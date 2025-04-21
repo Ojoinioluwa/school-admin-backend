@@ -88,7 +88,7 @@ const StudentUserControl = {
         }
 
         // create a token for the user using jsonwebtoken
-        const token = jwt.sign({id: user._id}, "OjayKey", {expiresIn: "3d"});
+        const token = jwt.sign({id: user._id, role: user.role}, "OjayKey", {expiresIn: "3d"});m
 
         // send to the frontend the token
         res.status(200).json({

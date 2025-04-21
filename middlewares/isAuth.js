@@ -16,8 +16,11 @@ const isAuthenticated = (req, res, next) => {
         // verify the token making use of jsonwebtoken
         const decoded = jwt.verify(token, "OjayKey");
 
-        // set the req.user to the decoded.id
-        req.user = decoded.id;
+        // set the req.user to the decoded
+        req.user = {
+            id: decoded.id,
+            role: decoded.role
+        };
         // call next with out anything
         next();
     } catch (err) {

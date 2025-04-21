@@ -10,6 +10,10 @@ const taskSchema = new mongoose.Schema({
         required: true,
         ref: "Student"
     },
+    teacherId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Teacher"
+    },
     description: {
         type: String,
         required: true

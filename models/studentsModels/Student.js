@@ -86,6 +86,12 @@ const studentUserSchema = new mongoose.Schema({
     password: {
         type: String,
         require: true,
+    },
+    role: {
+        type: String,
+        defualt: "Student",
+        enum: ["student", "teacher", "admin"],
+        required: true,
     }
       
 

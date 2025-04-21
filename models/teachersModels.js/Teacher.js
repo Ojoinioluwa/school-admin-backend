@@ -88,6 +88,12 @@ const teacherUserSchema = new mongoose.Schema({
     yearsOfExperience: {
     type: Number,
     require: true
+    },
+    role: {
+        type: String,
+        enum: ["student", "teacher", "admin"],
+        default: "Teacher",
+        required: true
     }
 }, 
 {

@@ -4,6 +4,7 @@ const Subject = require("../../models/adminModels/Subject");
 const Assignment = require("../../models/Assignment");
 const Level = require("../../models/adminModels/Level");
 const TeachersAnnouncement = require("../../models/teachersModels.js/TeachersAnnouncement");
+const Task = require("../../models/Task");
 
 const studentController = {
    
@@ -77,12 +78,7 @@ const studentController = {
 
     }),
 
-    addTask: asyncHandler(async(req,res)=> {
-        const {title, description, status, priority,} = req.body
-        if(!title || !description){
-            throw new Error()
-        }
-    }),
+ 
 
     getTeachersAnnoucement: asyncHandler(async(req,res)=> {
         const getCourses = await Level.find({student: {$elemMatch: {studentId: req.user}}}).select("_id").lean();

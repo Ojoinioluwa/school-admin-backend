@@ -43,6 +43,12 @@ const adminUserSchema = new mongoose.Schema({
     password: {
         type: String,
         require: true,
+    }, 
+    role: {
+        type: String,
+        default: "admin",
+        enum: ["student", "teacher", "admin"],
+        required: true
     }
 }, 
 {
