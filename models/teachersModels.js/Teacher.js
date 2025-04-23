@@ -1,110 +1,121 @@
-const mongoose = require("mongoose")
-
+const mongoose = require("mongoose");
 
 const teacherUserSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-    },
-    lastName: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    phone: {
-        type: String,
-        required: true
-    },
-    gender: {
-        type: String,
-        required: true,
-        enum: ["male", "female"],
-    },
-    department: {
-        type: String,
-        required: true,
-        enum: [
-            "Mathematics",
-            "English Language",
-            "Science",
-            "Social Studies",
-            "Computer Science",
-            "Physical and Health Education",
-            "Religious Studies",
-            "Agricultural Science",
-            "Civic Education",
-            "Business Studies",
-            "Home Economics",
-            "Arts and Crafts",
-            "Technical Drawing",
-            "Music",
-            "French",
-            "Literature in English",
-            "Economics",
-            "Geography",
-            "Biology",
-            "Physics",
-            "Chemistry",
-            "History",
-            "Government",
-            "Commerce",
-            "Guidance and Counselling",
-            "Special Education"
-          ],
-    },
-    staffId: {
-        type: String,
-        required: true
-    },
-    dateOfBirth: {
-        type: Date,
-        required: true
-    },
-    address: {
-        type: String,
-        required: true,
-    },
-    profileImage: {
-        type: String,
-        required: true
-    },
-    isClassTeacher: {
-        type: Boolean,
-        default: false,
-        enum: [true, false],
-      },
-    yearsOfExperience: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true, // Ensuring uniqueness for email
+    match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address.'], // Email validation regex
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 8, // Minimum password length
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  
+  gender: {
+    type: String,
+    required: true,
+    enum: ["male", "female"],
+  },
+  department: {
+    type: String,
+    required: true,
+    enum: [
+      "Mathematics",
+      "English Language",
+      "Science",
+      "Social Studies",
+      "Computer Science",
+      "Physical and Health Education",
+      "Religious Studies",
+      "Agricultural Science",
+      "Civic Education",
+      "Business Studies",
+      "Home Economics",
+      "Arts and Crafts",
+      "Technical Drawing",
+      "Music",
+      "French",
+      "Literature in English",
+      "Economics",
+      "Geography",
+      "Biology",
+      "Physics",
+      "Chemistry",
+      "History",
+      "Government",
+      "Commerce",
+      "Guidance and Counselling",
+      "Special Education",
+    ],
+  },
+  staffId: {
+    type: String,
+    required: true,
+    unique: true, // Ensure staff ID is unique
+  },
+  dateOfBirth: {
+    type: Date,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  profileImage: {
+    type: String,
+    required: true,
+  },
+  isClassTeacher: {
+    type: Boolean,
+    default: false,
+  },
+  yearsOfExperience: {
     type: Number,
-    require: true
-    },
-    role: {
-        type: String,
-        enum: ["student", "teacher", "admin"],
-        default: "Teacher",
-        required: true
-    }
+    required: true,
+    min: 0, // Ensure the years of experience is not negative
+  },
+  role: {
+    type: String,
+    enum: ["student", "teacher", "admin"],
+    default: "teacher",
+    required: true,
+  },
+  subjectsAssigned: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Subject", // Assuming you have a Subject model for better subject handling
+  }],
+  classesAssigned: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Level", // Assuming you have a Class model for better class handling
+  }],
+  attendanceRecords: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Attendance", // Assuming you have an Attendance model
+  }],
+  qualifications: [{
+    type: String, // Array of qualifications for the teacher
+  }],
+  departmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Department",
+  }
 }, 
 {
-    timestamps: true
-})
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
+});
 
-module.exports = mongoose.model("Teacher", teacherUserSchema)
-
-
-// some of this are to be added at other times when needed
-// {
-//     subjectsAssigned: [subjectId], // or detailed objects
-//     classesAssigned: [classId],
-//     attendanceRecords: [attendanceId], // optional
-//     qualifications,
-//     createdAt,
-//     updatedAt
-//   }
-  
+module.exports = mongoose.model("Teacher", teacherUserSchema);

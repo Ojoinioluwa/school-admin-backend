@@ -1,10 +1,10 @@
-const mongoose = requjire("mongoose");
+const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const { nanoid } = require("nanoid");
 const Teacher = require("../../models/teachersModels.js/Teacher");
 const Student = require("../../models/studentsModels/Student");
 
-const adminTeacherSchema = {
+const adminTeacherController = {
     filterTeachers: asyncHandler(async(req,res)=> {
         const {department, gender} = req.query
 
@@ -25,4 +25,4 @@ const adminTeacherSchema = {
 
 }
 
-module.exports = adminTeacherSchema
+module.exports = adminTeacherController

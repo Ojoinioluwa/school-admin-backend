@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { nanoid } = require('nanoid');
 const Student = require("../../models/studentsModels/Student");
@@ -124,7 +124,7 @@ const StudentUserControl = {
 
     }),
 
-    viewInfo: async(async(req,res)=> {
+    viewInfo: asyncHandler(async(req,res)=> {
         const user = await Student.findById(req.user).select("-password");
 
         if(!user){

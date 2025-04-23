@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const AdminUser = require("../../models/adminModels/AdminUser");
 
@@ -21,7 +21,7 @@ const AdminUser = require("../../models/adminModels/AdminUser");
         if(!isMatch){
             throw new Error("Invalid Login credentials")
         }
-        const token = jwt.sign({id: teacher._id, role: admin.role}, "OjayKey", {expiresIn: "3d"})
+        const token = jwt.sign({id: admin._id, role: admin.role}, "OjayKey", {expiresIn: "3d"})
         res.status(200).json({
             message: "Admin Login succesful",
             token,
@@ -64,5 +64,6 @@ const AdminUser = require("../../models/adminModels/AdminUser");
     })
   };
 
+  module.exports = authAdminController;
 
 
