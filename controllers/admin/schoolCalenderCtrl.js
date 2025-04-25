@@ -9,6 +9,12 @@ const schoolCalenderController = {
             res.status(400);
             throw new Error("All fields are required to create events")
         }
+        const existingEvent = await SchoolCalender.findOne({ eventTitle, date });
+        if (existingEvent) {
+            res.status(400);
+            throw new Error("An event with the same title already exists on this date");
+        }
+
 
         await SchoolCalender.create({
             eventDesc,
@@ -44,5 +50,17 @@ const schoolCalenderController = {
         res.status(200).json({
             message: "School Calender editted successfully",
         })
+    }),
+    deleteEvent: asyncHandler(async(req,res)=> {
+        const {eventId} = req.params
+      const event =  await SchoolCalender.findByIdAndDelete(eventId);
+      if(!event){
+        res.status(400)
+        throw new Error("Event not found")
+      }
+      res.status(200).json({
+        message: "Event Deleted Succesfully"
+      })
+
     })
 }
