@@ -13,11 +13,11 @@ const Student = require("../../models/studentsModels/Student");
 const teacherUserController = {
     register: asyncHandler(async(req, res)=> {
         // getting all the neccessary information from the req.body
-        const {firstName, lastName, email, password, phone, gender, department, dateOfBirth,address, profileImage, yearsOfExperience } = req.body;
+        const {firstName, lastName, email, password, phone, gender, dateOfBirth,address, profileImage, yearsOfExperience, departmentId } = req.body;
 
 
         // validating that all the fields are field in other to ensure that no error in inserting into the database
-        if(!firstName || !lastName || !email || !password || !phone || !gender || !department || !dateOfBirth || !address || !profileImage || !yearsOfExperience){
+        if(!firstName || !lastName || !email || !password || !phone || !gender  || !dateOfBirth || !address || !profileImage || !yearsOfExperience || !departmentId){
             // throwing the error to the errorHandler
             throw new Error("All fields are required for registeration to be succesfull");
         }
@@ -47,7 +47,8 @@ const teacherUserController = {
             address, 
             profileImage, 
             yearsOfExperience,
-            staffId
+            staffId,
+            departmentId
         })
 
 

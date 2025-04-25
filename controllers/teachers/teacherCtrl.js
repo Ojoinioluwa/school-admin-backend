@@ -7,7 +7,7 @@ const TeachersAnnouncement = require("../../models/teachersModels.js/TeachersAnn
 
 const teacherController = {
     getAssignedCourse: asyncHandler(async(req, res)=> {
-        const assignedCourses = await Subject.find({teachers: {$elemMatch: {teacherId: req.user}}}).lean()
+        const assignedCourses = await Subject.find({teacherId: req.user}).lean()
         if(assignedCourses.length === 0){
             res.status(404);
             throw new Error("No course assigned yet, consult with the admin")

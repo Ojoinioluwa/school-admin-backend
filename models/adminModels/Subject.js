@@ -15,16 +15,10 @@ const subjectSchema = new mongoose.Schema({
         required: [true, 'Course title is required'],
         trim: true
       },
-    teachers: [{ 
-        teacherId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Teacher"
-            },
-        teacherRole: {
-            type: String,
-            enum: ["Main Teacher", "Assistant Teacher"]
-        }
-    }],
+      teacherId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Teacher"
+    },
     students: [{
         studentId: {
             type: mongoose.Schema.Types.ObjectId,

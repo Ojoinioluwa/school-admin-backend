@@ -81,12 +81,11 @@ const attendance = {
         res.status(404);
         throw new Error("No attendance record found.");
     }
-    const countAttendance = {};
-    filteredAttendance.forEach((att)=> countAttendance[att.status] = (countAttendance[att.status] || 0) + 1)
+    const attendanceCount = countAttendance(filteredAttendance, "status")
     res.status(200).json({
         message: "Filtered Attendance fetched Successfully",
         filteredAttendance,
-        countAttendance
+        attendanceCount
     })
         
     }),
@@ -106,12 +105,12 @@ const attendance = {
         res.status(404) 
         throw new Error("Attendance record is empty");
     }
-    const countAttendance = countAttendance(filteredAttendance, "status")   
+    const attendanceCount = countAttendance(filteredAttendance, "status")   
 
     res.status(200).json({
         message: "Attendnaced fetched Succesfully",
         filteredAttendance,
-        countAttendance
+        attendanceCount
     })
     })
     // TODO:   pagination and indexing 

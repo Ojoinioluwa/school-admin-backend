@@ -7,7 +7,6 @@ const taskSchema = new mongoose.Schema({
     },
     studentId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: "Student"
     },
     teacherId: {

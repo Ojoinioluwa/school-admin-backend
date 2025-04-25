@@ -61,12 +61,15 @@ const levelController = {
 
     }),
     editLevel: asyncHandler(async(req,res)=> {
+        const {teacherId} = req.body;
         const {levelId} = req.params
         const level = await Level.findById(levelId)
 
         if(!level){
             throw new Error("Level does not exist")
         }
+        if (teacherId) level.teacher = teacherId;
+        await level.save()
 
     }),
     leveinfo: asyncHandler(async(req,res)=> {
@@ -80,7 +83,18 @@ const levelController = {
             message: "Level info fetched succesfully",
             levelInfo
         })
-    })
+    }),
+    getAllLevelsForAdmin: asyncHandler(async(req,res)=> {
+        // const {} = req.params
+        const Levels = await Level.find();
+        if(Levels.length === 0 ){
+            throw new Error("No levels created yet ")
+        }
+        res.status(200).json({
+            message: "Levels Fetched Succesfully",
+            Levels
+        })
+    }),
 }
 
 
