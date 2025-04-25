@@ -21,9 +21,8 @@ const schoolCalenderController = {
             eventTitle,
             date
         })
-        res.status(200).json({
-            message: "Evented Created Succesfully"
-        })
+        res.status(201).json({ message: "Event created successfully" });
+
     }),
     getEvent: asyncHandler(async(req,res)=> {
         const schoolCalender = await SchoolCalender.find().lean();
@@ -64,3 +63,6 @@ const schoolCalenderController = {
 
     })
 }
+
+
+module.exports = schoolCalenderController
