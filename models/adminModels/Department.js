@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const  mongoose = require('mongoose');
 
 const departmentSchema = new mongoose.Schema({
   name: {
@@ -29,7 +29,10 @@ const departmentSchema = new mongoose.Schema({
   profileImage: {
     type: String,
     required: true,
-  }
+  },
+  Levels: [{levelId: {type: mongoose.Schema.Types.ObjectId, ref: "Level"}}]
 });
 
-export default mongoose.model('Department', departmentSchema);
+
+
+module.exports =  mongoose.model('Department', departmentSchema);

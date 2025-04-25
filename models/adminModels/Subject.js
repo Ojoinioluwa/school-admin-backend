@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 
+
 // TODO: make changes to the subject or course controller based on the changes to the model
 const subjectSchema = new mongoose.Schema({
     courseCode: {
@@ -47,12 +48,12 @@ const subjectSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Credit unit is required']
       },
-      department: {
+      departmentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Department',
         required: [true, 'Department is required']
       },
-      level: {
+      levelId: {
         type: String,
         required: [true, 'Level is required']
       },
@@ -66,7 +67,8 @@ const subjectSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        required: true
       }
 },
 {

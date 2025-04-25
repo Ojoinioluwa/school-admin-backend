@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
 
 
-const classSchema = new mongoose.Schema({
+const levelSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
     year: {
-        type: String, 
+        type: Date, 
         required: true,
+        default: Date.now
     },
     teacher: {
         type: mongoose.Schema.Types.ObjectId,
@@ -25,12 +26,18 @@ const classSchema = new mongoose.Schema({
                 enum: ["captain", "assistant captain", "member"]
             }
         }
-    ]
+    ],
+    departmentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Department",
+        required: true
+    }
 }, 
  {
     timestamps: true
  })
 
+ levelSchema.index({departmentId: 1, name: 1, year: 1}, {unique: true})
 
- module.exports = mongoose.model("Level", classSchema)
+ module.exports = mongoose.model("Level", levelSchema)
 
