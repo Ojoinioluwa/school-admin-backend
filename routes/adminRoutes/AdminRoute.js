@@ -24,11 +24,7 @@ adminRouter.post("/api/v1/admin/AddTeacher", teacherUserController.register);
 // register students
 adminRouter.post("/api/v1/admin/AddStudent", StudentUserControl.register);
 
-// departments logic
-adminRouter.post("/api/v1/admin/department/create-department", departmentController.createDepartment);
-adminRouter.get("/api/v1/admin/department/viewInfo/:deptId", departmentController.viewInfo);
-adminRouter.get("/api/v1/admin/department/allDepts", departmentController.getAllDepartment);
-adminRouter.put("/api/v1/admin/department/editDepartment/:deptId", departmentController.editDept);
+
 
 
 // Levels logic

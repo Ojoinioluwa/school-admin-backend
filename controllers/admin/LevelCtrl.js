@@ -8,7 +8,7 @@ const Level = require("../../models/adminModels/Level");
 const levelController = {
     // create the department to be done only by the admin
     create: asyncHandler(async(req,res)=> {
-        const {name, year} = req.body;
+        const {name, year, teacher} = req.body;
         const {departmentId} = req.params
         // checking if the client passes the necessary informations
         if(!name || !year){
@@ -29,7 +29,8 @@ const levelController = {
         const level = await Level.create({
             name,
             year,
-            departmentId
+            departmentId,
+            teacher,
         });
 
         // pushing the levelId to the department

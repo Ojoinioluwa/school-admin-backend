@@ -48,7 +48,7 @@ const subjectSchema = new mongoose.Schema({
         required: [true, 'Department is required']
       },
       levelId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: [true, 'Level is required']
       },
     description: {

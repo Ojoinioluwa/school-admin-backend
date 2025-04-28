@@ -5,7 +5,10 @@ const errorHandler = require("./middlewares/errorHandler");
 const adminRouter = require('./routes/adminRoutes/AdminRoute');
 const studentsRouter = require('./routes/studentsRoutes/StudentRoute');
 const teacherRouter = require('./routes/teachersRoutes/TeacherRoute');
-const cors = require("cors")
+const cors = require("cors");
+const schoolCalenderRouter = require('./routes/SchoolCalender/schoolCalenderRoute');
+const deptRouter = require('./routes/deptRoutes/deptRoute');
+const levelRouter = require('./routes/LevelRoutes/levelRoute');
 
 const app = express()
 const PORT = 8080
@@ -28,6 +31,9 @@ app.use(cors(corsOption))
    app.use(express.json());
 
    app.use("/", adminRouter)
+   app.use("/", schoolCalenderRouter)
+   app.use("/", deptRouter)
+   app.use("/", levelRouter)
    app.use("/", studentsRouter)
    app.use("/", teacherRouter)
 

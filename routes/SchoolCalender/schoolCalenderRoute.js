@@ -15,3 +15,6 @@ schoolCalenderRouter.put("/api/v1/admin/schooolCalender/editEvent/:schoolCalende
 
 // delete the event 
 schoolCalenderRouter.delete("/api/v1/admin/schooolCalender/deleteEvent/:schoolCalenderId", schoolCalenderController.deleteEvent);
+
+
+module.exports = schoolCalenderRouter
