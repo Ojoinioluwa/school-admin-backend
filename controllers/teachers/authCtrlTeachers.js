@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {nanoid} = require("nanoid");
-const Teacher = require("../../models/teachersModels.js/Teacher");
+const Teacher = require("../../models/teachersModels/Teacher");
 const Level = require("../../models/adminModels/Level");
 const Student = require("../../models/studentsModels/Student");
 

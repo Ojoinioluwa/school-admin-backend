@@ -6,6 +6,7 @@ const teacherUserController = require("../../controllers/teachers/authCtrlTeache
 const StudentUserControl = require("../../controllers/students/authCtrlStudents");
 const departmentController = require("../../controllers/admin/DepartmentCtrl");
 const levelController = require("../../controllers/admin/LevelCtrl");
+const schoolCalenderController = require("../../controllers/admin/schoolCalenderCtrl");
 
 const adminRouter = express.Router()
 // TODO: make a sepearte place for departments and RBAC for editing dept and creating Departments others can be viewed by others
@@ -27,6 +28,7 @@ adminRouter.post("/api/v1/admin/AddStudent", StudentUserControl.register);
 adminRouter.post("/api/v1/admin/department/create-department", departmentController.createDepartment);
 adminRouter.get("/api/v1/admin/department/viewInfo/:deptId", departmentController.viewInfo);
 adminRouter.get("/api/v1/admin/department/allDepts", departmentController.getAllDepartment);
+adminRouter.put("/api/v1/admin/department/editDepartment/:deptId", departmentController.editDept);
 
 
 // Levels logic
@@ -36,8 +38,18 @@ adminRouter.post("/api/v1/admin/department/:departmentId/createLevel", levelCont
 // get Levels for the departments
 adminRouter.get("/api/v1/admin/department/:departmentId/getLevels", levelController.getLevelsForDepartment);
 
-// get level for info for s
-adminRouter.put("/api/v1/admin/department/:departmentId/", levelController.editLevel);
+// get level for info for admin get all levels
+adminRouter.put("/api/v1/admin/department/:departmentId/level/", levelController.editLevel);
+
+
+// get basic info about the school to be displayed on the dashboard
+adminRouter.get("/api/v1/admin/getBasicInfo", authAdminController.getCountsAndInfo)
+
+// get the list of teachers
+adminRouter.get("/api/v1/admin/filterTeachers", adminTeacherController.filterTeachers)
+
+
+
 
 
 module.exports = adminRouter

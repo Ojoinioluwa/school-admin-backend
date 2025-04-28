@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Department = require("../../models/adminModels/Department");
-const Teacher = require("../../models/teachersModels.js/Teacher");
+const Teacher = require("../../models/teachersModels/Teacher");
 
 // TODO: change the logic of the backend to ensure that the departmentId is stored not the 
 // TODO: get the students that are in the department
@@ -58,7 +58,7 @@ const departmentController = {
         
     }),
     getAllDepartment: asyncHandler(async(req,res)=> {
-        const depts = await Department.find().lean();
+        const depts = await Department.find().populate("headOfDepartment", "firstName lastName gender email").lean();
         if(depts.length === 0){
             res.status(404)
             throw new Error("No Department present. please create departments");

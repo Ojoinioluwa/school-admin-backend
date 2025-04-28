@@ -5,6 +5,7 @@ const errorHandler = require("./middlewares/errorHandler");
 const adminRouter = require('./routes/adminRoutes/AdminRoute');
 const studentsRouter = require('./routes/studentsRoutes/StudentRoute');
 const teacherRouter = require('./routes/teachersRoutes/TeacherRoute');
+const cors = require("cors")
 
 const app = express()
 const PORT = 8080
@@ -14,7 +15,14 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(()=> console.log("Database connected succesfully"))
     .catch((err)=> console.log(err))
 
+const corsOption = {
+    origin: ["http://localhost:5173"],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+}
 
+app.use(cors(corsOption))
 
    // make use of all middlewares here
    app.use(express.json());

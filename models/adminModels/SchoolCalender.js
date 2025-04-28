@@ -19,4 +19,5 @@ const schoolCalenderSchema = new mongoose.Schema({
     timestamps: true
 });
 
+schoolCalenderSchema.index({date: 1, eventTitle: 1}, {unique: true})
 module.exports = mongoose.model("SchoolCalender", schoolCalenderSchema)

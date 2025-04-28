@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const SchoolCalender = require("../../models/adminModels/SchoolCalender");
+const { eventNames } = require("../../models/studentsModels/Student");
 
 const schoolCalenderController = {
     createEvent: asyncHandler(async(req,res)=> {
@@ -9,13 +10,11 @@ const schoolCalenderController = {
             res.status(400);
             throw new Error("All fields are required to create events")
         }
-        const existingEvent = await SchoolCalender.findOne({ eventTitle, date });
+        const existingEvent = await SchoolCalender.findOne({eventTitle});
         if (existingEvent) {
             res.status(400);
             throw new Error("An event with the same title already exists on this date");
         }
-
-
         await SchoolCalender.create({
             eventDesc,
             eventTitle,
@@ -24,14 +23,14 @@ const schoolCalenderController = {
         res.status(201).json({ message: "Event created successfully" });
 
     }),
-    getEvent: asyncHandler(async(req,res)=> {
-        const schoolCalender = await SchoolCalender.find().lean();
-        if(schoolCalender.length === 0){
+    getEvents: asyncHandler(async(req,res)=> {
+        const events = await SchoolCalender.find().lean();
+        if(events.length === 0){
             throw new Error("Schoool calender is empty");
         }
         res.status(200).json({
             message: "School calender fetched Succesfully",
-            schoolCalender
+            events
         })
     }),
     editEvent: asyncHandler(async(req,res)=> {
@@ -51,8 +50,8 @@ const schoolCalenderController = {
         })
     }),
     deleteEvent: asyncHandler(async(req,res)=> {
-        const {eventId} = req.params
-      const event =  await SchoolCalender.findByIdAndDelete(eventId);
+        const {schoolCalenderId} = req.params
+      const event =  await SchoolCalender.findByIdAndDelete(schoolCalenderId);
       if(!event){
         res.status(400)
         throw new Error("Event not found")
