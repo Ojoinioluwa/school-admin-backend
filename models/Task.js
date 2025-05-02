@@ -13,6 +13,10 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Teacher"
     },
+    adminId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Admin"
+    },
     description: {
         type: String,
         required: true

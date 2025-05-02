@@ -47,13 +47,17 @@ const levelController = {
             throw new Error("Incorrect Url do not modify the url")
         }
         // checking if the department exist
-        const departmentExist = await Department.findById(departmentId);
+        const departmentExist = await Department.findById(departmentId).lean();
         if(!departmentExist) {
             res.status(400)
             throw new Error("Department does not exist");
         }
         // finding the levels by the department id
-        const levels = await Level.find({departmentId})
+        const levels = await Level.find({departmentId}).populate([ { path: 'departmentId', select: "name code headOfDepartment profileImage" }, {path: "teacher", select: "firstName  lastName"}]).lean();
+        if(levels.length === 0){
+            res.status(400)
+            throw new Error("No levels created yet for this department")
+        }
 
         res.json({
             message: `Levels fetched succesffully ${departmentExist.name}`,
@@ -75,7 +79,8 @@ const levelController = {
     }),
     leveinfo: asyncHandler(async(req,res)=> {
         const {levelId} = req.params
-        const levelInfo =  await Level.findById(levelId);
+        const levelInfo =  await Level.findById(levelId).populate([ { path: 'departmentId', select: "name code headOfDepartment profileImage" },
+            { path: 'student.studentId', select: 'firstName lastName profileImage' }, {path: "teacher", select: "firstName lastName"}]).lean();
         if(!levelInfo){
             res.status(400)
             throw new Error("Level Not found can't display information");
@@ -86,8 +91,11 @@ const levelController = {
         })
     }),
     getAllLevelsForAdmin: asyncHandler(async(req,res)=> {
-        // const {} = req.params
-        const Levels = await Level.find();
+        const {department} = req.params
+        const filters = {}
+        if(department) filters.department = department
+        const Levels = await Level.find(filters).populate([ { path: 'departmentId', select: "name code headOfDepartment profileImage" },
+            { path: 'student.studentId', select: 'firstName lastName profileImage' }, {path: "teacher", select: "firstName lastName"}]).lean();
         if(Levels.length === 0 ){
             throw new Error("No levels created yet ")
         }

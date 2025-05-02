@@ -35,6 +35,22 @@ const taskController = {
                 message: "Task Created Successfully"
             })
         }),
+        addAdminTask: asyncHandler(async(req,res)=> {
+            const {title, description, status, priority,} = req.body
+            if(!title || !description){
+                throw new Error("Fill in the required fields to create task");
+            }
+            await Task.create({
+                title,
+                description,
+                status,
+                priority,
+                adminId: req.user.id,
+            })
+            res.status(200).json({
+                message: "Task Created Successfully"
+            })
+        }),
         updateTask: asyncHandler(async(req, res)=> {
             const {status, priority} = req.body
             const {taskId} = req.params
@@ -65,7 +81,25 @@ const taskController = {
         }),
         filterTeacherTask: asyncHandler(async(req, res)=> {
             const { status, priority,} = req.body
-            const filters = {teacherId: req.user};
+            const filters = {teacherId: req.user, };
+
+            if(status) filters.status = status;
+            if(priority) filters.priority = priority;
+            const tasks = await Task.find(filters)
+            if(tasks.length === 0){
+                res.status(400)
+                throw new Error("No task Present yet")
+            }
+            res.status(200).json({
+                message: "fetched all tasks successfully",
+                tasks
+            })
+
+
+        }),
+        filterAdminTask: asyncHandler(async(req, res)=> {
+            const { status, priority,} = req.body
+            const filters = {adminId: req.user, };
 
             if(status) filters.status = status;
             if(priority) filters.priority = priority;
@@ -92,3 +126,5 @@ const taskController = {
             })
         })
 }
+
+module.exports = taskController;

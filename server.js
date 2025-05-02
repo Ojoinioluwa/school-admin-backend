@@ -8,7 +8,9 @@ const teacherRouter = require('./routes/teachersRoutes/TeacherRoute');
 const cors = require("cors");
 const schoolCalenderRouter = require('./routes/SchoolCalender/schoolCalenderRoute');
 const deptRouter = require('./routes/deptRoutes/deptRoute');
-const levelRouter = require('./routes/LevelRoutes/levelRoute');
+const levelRouter = require('./routes/LevelRoutes/levelRoute'); 
+
+// TODO: make use of   .exec() in all files to follow best practice
 
 const app = express()
 const PORT = 8080

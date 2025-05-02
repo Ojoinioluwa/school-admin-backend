@@ -11,7 +11,7 @@ const countAttendance = (array, prop) => {
     return count
 }
 
-const attendance = {
+const attendanceController = {
     markStudentAttendance: asyncHandler(async(req, res)=> {
         const {attendanceArr} = req.body
         const {subjectId, classId} = req.params
@@ -49,18 +49,18 @@ const attendance = {
             countAttendance
         })
     }),
-    getTeacherAttendance: asyncHandler(async(req,res)=>{
-        const attendance = await TeacherAttendance.find({teacherId: req.user}).sort({date: -1}).lean();
-        if(attendance.length === 0){
-            res.status(404)
-            throw new Error("No Attendnance record yet");
-        }
-        const countAttendance = countAttendance(attendance, "status")
-        res.status(200).json({
-            message: "Attendance Fetched Succesfully",
-            attendance
-        })
-    }),
+    // getTeacherAttendance: asyncHandler(async(req,res)=>{
+    //     const attendance = await TeacherAttendance.find({teacherId: req.user}).sort({date: -1}).lean();
+    //     if(attendance.length === 0){
+    //         res.status(404)
+    //         throw new Error("No Attendnance record yet");
+    //     }
+    //     const countAttendance = countAttendance(attendance, "status")
+    //     res.status(200).json({
+    //         message: "Attendance Fetched Succesfully",
+    //         attendance
+    //     })
+    // }),
     filterStudentAttendance: asyncHandler(async(req,res)=> {
         const {startDate, endDate, subjectID} = req.body
         const {subjectId: paramSubjectId} = req.params

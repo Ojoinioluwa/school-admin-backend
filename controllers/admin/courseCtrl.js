@@ -44,6 +44,10 @@ const courseController = {
     editCourse: asyncHandler(async(req,res)=> {
         const {teacherId} = req.body
         const { courseId } = req.params
+        if(req.user.role !== "admin" || req.user.role !== "teacher"){
+            res.status(401);
+            throw new Error("You are not authorized to perform this action")
+        }
         const course = await Subject.findById(courseId);
         if(!course){
             res.status(400);
@@ -57,7 +61,30 @@ const courseController = {
         res.json({
             message: "Subject information has been updated",
         })
-    })
+    }),
+    listCoursesStudent: asyncHandler(async(req,res)=> {
+        const courses = await Subject.find({students: {$elemMatch: {studentId: req.user.id}}})
+        if(courses.length === 0){
+            res.status(400);
+            throw new Error("No courses found for this student");
+        }
+        res.status(200).json({
+            message: "Courses fetched successfully",
+            courses
+        })
+    }),
+    listCoursesTeacher: asyncHandler(async(req,res)=> {
+        const {teacherId} = req.params
+        const courses = await Subject.find({teacherId})
+        if(courses.length === 0){
+            res.status(400);
+            throw new Error("No courses found for this teacher");
+        }
+        res.status(200).json({
+            message: "Courses fetched successfully",
+            courses
+        })
+    }),
 
 }
 

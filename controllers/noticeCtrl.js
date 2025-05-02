@@ -64,6 +64,9 @@ const noticeController = {
     }),
     deleteNotice: asyncHandler(async(req,res)=>{
         const {noticeId} = req.params;
+        if(req.user.role !== admin){
+            throw new Error("You are not authorized to delete this notice")
+        }
         const notice = await Notice.findByIdAndDelete(noticeId);
         if(!notice){
             res.status(400)

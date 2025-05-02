@@ -18,7 +18,7 @@ const eventController = {
                 throw new Error("Exactly one of studentId, teacherId, or adminId must be provided");
             }
     
-            await Event.create({
+           const event =  await Event.create({
                 eventDesc,
                 eventTitle,
                 date,
@@ -26,8 +26,9 @@ const eventController = {
                 adminId,
                 teacherId
             })
-            res.status(200).json({
-                message: "Evented Created Succesfully"
+            res.status(201).json({
+                message: "Evented Created Succesfully",
+                event
             })
         }),
         getStudentEvent: asyncHandler(async(req,res)=> {

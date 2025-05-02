@@ -27,22 +27,13 @@ adminRouter.post("/api/v1/admin/AddStudent", StudentUserControl.register);
 
 
 
-// Levels logic
-// create Level for a department
-adminRouter.post("/api/v1/admin/department/:departmentId/createLevel", levelController.create);
 
-// get Levels for the departments
-adminRouter.get("/api/v1/admin/department/:departmentId/getLevels", levelController.getLevelsForDepartment);
-
-// get level for info for admin get all levels
-adminRouter.put("/api/v1/admin/department/:departmentId/level/", levelController.editLevel);
 
 
 // get basic info about the school to be displayed on the dashboard
 adminRouter.get("/api/v1/admin/getBasicInfo", authAdminController.getCountsAndInfo)
 
-// get the list of teachers
-adminRouter.get("/api/v1/admin/filterTeachers", adminTeacherController.filterTeachers)
+
 
 
 

@@ -6,6 +6,7 @@ const Teacher = require("../../models/teachersModels/Teacher");
 // TODO: change the logic of the backend to ensure that the departmentId is stored not the 
 // TODO: get the students that are in the department
 // TODO: Add the feature of counting the number of students and the teachers in a dept
+// TODO: make the departmentSchema to have both the teacher and student as a reference to the department
 
 const departmentController = {
     createDepartment: asyncHandler(async(req, res)=> {
@@ -33,9 +34,15 @@ const departmentController = {
         const {deptId} = req.params;
         const dept = await Department.findById(deptId);
         const teachers = await Teacher.find({department: dept.name}).select("-password")
+        const students = await Student.find({department: dept.name}).select("-password")
+        if(!dept){
+            res.status(404)
+            throw new Error("Department not found")
+        }
         res.status(200).json({
             dept,
-            teachers
+            teachers,
+            students
         })
         
     }),
