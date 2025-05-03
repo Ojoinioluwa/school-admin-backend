@@ -5,7 +5,7 @@ const Assignment = require("../../models/Assignment");
 
 const assignmentController = {
     create: asyncHandler(async(req,res)=> {
-        const {title,deadline, task, taskDoc} = req.body;
+        const {title,deadline, task} = req.body;
         const {SubjectId} = req.params
         if(!title || !deadline || !task){
             throw new Error("Fill in the required fields to create an assignment");
@@ -17,7 +17,7 @@ const assignmentController = {
             title,
             task,
             deadline,
-            taskDoc,
+            taskDoc: req.file.path,
             teacherID: req.user,
             SubjectId,
         })

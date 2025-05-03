@@ -17,7 +17,15 @@ const noticeSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
-    }
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    profileImage: {
+        type: String,
+        required: true
+    },
 },
 {
     timestamps: true

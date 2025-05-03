@@ -17,7 +17,8 @@ const noticeController = {
         await Notice.create({
             title,
             description,
-            date
+            date,
+            profileImage: req.file.path,
         })
         res.status(201).json({
             message: "Notice created Successfully",

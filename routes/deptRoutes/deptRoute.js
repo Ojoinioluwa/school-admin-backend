@@ -1,4 +1,8 @@
 const express = require("express");
+const multer = require('multer');
+const { storage } = require('../../utils/cloudinary');
+const upload = multer({ storage });
+const { cloudinary } = require('../../utils/cloudinary');
 const departmentController = require("../../controllers/admin/DepartmentCtrl");
 
 const deptRouter = express.Router()
@@ -8,7 +12,7 @@ const deptRouter = express.Router()
 // departments logic
 
 // create the department for only admins alone
-deptRouter.post("/api/v1/admin/department/create-department", departmentController.createDepartment);
+deptRouter.post("/api/v1/admin/department/create-department", upload.single("profileImage"), departmentController.createDepartment);
 
 // for both admin and teacher to get the department info
 // view info of the department

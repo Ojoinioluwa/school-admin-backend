@@ -12,7 +12,7 @@ subjectRouter.get("/api/v1/teacher/listCourses", courseController.listCoursesTea
 // get courses for admin
 subjectRouter.get("/api/v1/admin/listCourses", courseController.listCourseAdmin)
 
-// create course
+// create course for admins only
 subjectRouter.post("/api/v1/admin/createCourse", courseController.createCourse)
 
 // authorize course for only admin and teacher

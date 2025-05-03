@@ -1,4 +1,7 @@
 const express = require("express")
+const multer = require('multer');
+const { storage } = require('../../utils/cloudinary');
+const upload = multer({ storage });
 const adminTeacherController = require("../../controllers/admin/AdminTeacherCtrl");
 const adminStudentsController = require("../../controllers/admin/adminStudentsCtrl");
 const authAdminController = require("../../controllers/admin/authCtrlAdmin");
@@ -18,16 +21,11 @@ adminRouter.get("/api/v1/admin/students", adminStudentsController.filterStudent)
 // login admin
 adminRouter.post("/api/v1/admin/login", authAdminController.login);
 // reguster admin
-adminRouter.post("/api/v1/admin/register", authAdminController.register);
+adminRouter.post("/api/v1/admin/register", upload.single("profileImage"), authAdminController.register);
 // register teacher
-adminRouter.post("/api/v1/admin/AddTeacher", teacherUserController.register);
+adminRouter.post("/api/v1/admin/AddTeacher", upload.single("profileImage"), teacherUserController.register);
 // register students
-adminRouter.post("/api/v1/admin/AddStudent", StudentUserControl.register);
-
-
-
-
-
+adminRouter.post("/api/v1/admin/AddStudent", upload.single("profileImage"), StudentUserControl.register);
 
 
 // get basic info about the school to be displayed on the dashboard

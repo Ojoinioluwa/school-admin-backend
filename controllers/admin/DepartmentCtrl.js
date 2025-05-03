@@ -10,7 +10,7 @@ const Teacher = require("../../models/teachersModels/Teacher");
 
 const departmentController = {
     createDepartment: asyncHandler(async(req, res)=> {
-        const {name, code, description, profileImage, headOfDepartment} = req.body;
+        const {name, code, description, headOfDepartment} = req.body;
         if(!name || !code || !description || !profileImage){
             throw new Error("All required to create departments")
         }
@@ -22,7 +22,7 @@ const departmentController = {
             name,
             code,
             description,
-            profileImage,
+            profileImage: req.file.path,
             headOfDepartment
         })
         res.status(200).json({

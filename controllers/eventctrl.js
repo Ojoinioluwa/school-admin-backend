@@ -24,6 +24,7 @@ const eventController = {
                     eventTitle,
                     date,
                     studentId: req.user.id,
+                    profileImage: req.file.path,
                 })
                 res.status(201).json({
                     message: "Evented Created Succesfully",

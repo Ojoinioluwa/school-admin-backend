@@ -66,7 +66,7 @@ const countGender = (array)=> {
             gender,
             dateOfBirth,
             address, 
-            profileImage, 
+            profileImage: req.file.path, 
             password: hashedPassword,
         })
         res.status(200).json({

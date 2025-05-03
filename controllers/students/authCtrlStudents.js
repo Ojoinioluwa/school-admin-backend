@@ -13,7 +13,7 @@ const StudentUserControl = {
     // the register logic for the Student
     register: asyncHandler(async(req, res)=> {
         // gettimg the info from the info from the req.body
-        const {firstName, lastName, email, password, gender, dateOfBirth, address, profileImage, classLevel, classYear} = req.body
+        const {firstName, lastName, email, password, gender, dateOfBirth, address, classLevel, classYear} = req.body
         // making an instance of the student Id 
         const studentId = nanoid(8); 
         // checking if all the required fields are present
@@ -37,7 +37,6 @@ const StudentUserControl = {
         // finding the class based on the classLevel and the year 
         const classInfo = await Level.findOne({name: classLevel, year: classYear});
 
-
         // checking if the info is present to determine whether there will be an error
         if(!classInfo){
             // throwing the error if the classInfo is not present
@@ -53,7 +52,7 @@ const StudentUserControl = {
             gender,
             dateOfBirth, 
             address,
-            profileImage,
+            profileImage: req.file.path,
             studentId,
             classId: classInfo._id,
         })
