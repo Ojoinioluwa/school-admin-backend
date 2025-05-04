@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Assignment = require("../../models/Assignment");
+const { getAssignment } = require("../students/StudentAssignmentCtrl");
 
 
 const assignmentController = {
@@ -61,7 +62,21 @@ const assignmentController = {
         res.status(200).json({
             message: "Assignment deleted successfully"
         })
-    })
+    }),
+    getAssignmentInfo: asyncHandler(async(req,res)=> {
+        const {assignmentId} = req.params
+        const assignment = await Assignment.findById(assignmentId).lean()
+        if(!assignment) throw new Error("Assignment does not exist")
+        if(assignment.teacherID.toString() !== req.user._id.toString()){
+            throw new Error("You are not authorized to view this assignment")
+        }
+        const numberOfSubmissions = assignment.submissions.length
+        res.status(200).json({
+            message: "Assignment fetched successfully",
+            assignment,
+            numberOfSubmissions
+        })
+    }),
 }
 
 module.exports = assignmentController

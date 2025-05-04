@@ -18,7 +18,7 @@ levelRouter.post("/api/v1/admin/department/:departmentId/createLevel", levelCont
 levelRouter.get("/api/v1/admin/department/:departmentId/getLevels", levelController.getLevelsForDepartment);
 
 // edit events
-levelRouter.put("/api/v1/admin/department/:departmentId/level/", levelController.editLevel);
+levelRouter.put("/api/v1/admin/department/:departmentId/level/:levelId", levelController.editLevel);
 
 levelRouter.get('/api/v1/admin/level/getAllforAdmin', levelController.getAllLevelsForAdmin);
 

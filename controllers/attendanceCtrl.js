@@ -3,7 +3,8 @@ const asyncHandler = require("express-async-handler");
 const Student = require("../models/studentsModels/Student");
 const studentAttendance = require("../models/studentsModels/studentAttendance");
 const Level = require("../models/adminModels/Level");
-const TeacherAttendance = require("../models/teachersModels.js/TeacherAttendance");
+const TeacherAttendance = require("../models/teachersModels/TeacherAttendance");
+
 
 const countAttendance = (array, prop) => {
     const count = {};
@@ -17,7 +18,7 @@ const attendanceController = {
         const {subjectId, classId} = req.params
         if(attendanceArr.length === 0) throw new Error("Can't mark the attendance because it is empty");
         await studentAttendance.insertMany(
-            attendanceArr.map(a => ({ recordedBy: req.user, status: a.status, studentId: a.studentId, subjectId, classId }))
+            attendanceArr.map(att => ({ recordedBy: req.user, status: att.status, studentId: att.studentId, subjectId, classId, date: new Date() }))
           );
           
         res.status(200).json({
@@ -29,7 +30,7 @@ const attendanceController = {
         const {attendanceArr} = req.body;
         if(attendanceArr.length === 0) throw new Error("Can't mark the attendance because it is empty")
         await TeacherAttendance.insertMany(
-            attendanceArr.map((a)=> ({recordedBy: req.user, status: a.status, teacherId: a.teacherId}))
+            attendanceArr.map((a)=> ({recordedBy: req.user, status: a.status, teacherId: a.teacherId, date: new Date()}))
         )
         res.status(200).json({
             message: "Attendance marked for the day"
@@ -49,20 +50,22 @@ const attendanceController = {
             countAttendance
         })
     }),
-    // getTeacherAttendance: asyncHandler(async(req,res)=>{
-    //     const attendance = await TeacherAttendance.find({teacherId: req.user}).sort({date: -1}).lean();
-    //     if(attendance.length === 0){
-    //         res.status(404)
-    //         throw new Error("No Attendnance record yet");
-    //     }
-    //     const countAttendance = countAttendance(attendance, "status")
-    //     res.status(200).json({
-    //         message: "Attendance Fetched Succesfully",
-    //         attendance
-    //     })
-    // }),
+    getStudentsAttendancePerClass: asyncHandler(async(req,res)=> {
+        const {classId} = req.params
+        const attendance = await studentAttendance.find({classId}).sort({date: -1}).lean()
+        if(attendance.length === 0){
+            res.status(404)
+            throw new Error("No attendance record for this class")
+        }
+        const attendanceCount = countAttendance(attendance, "status")
+        res.status(200).json({
+            message: "Attendance fetched Successfully",
+            attendance,
+            attendanceCount
+        })
+    }),
     filterStudentAttendance: asyncHandler(async(req,res)=> {
-        const {startDate, endDate, subjectID} = req.body
+        const {startDate, endDate, subjectID} = req.query
         const {subjectId: paramSubjectId} = req.params
         
         const filters = {studentId: req.user};
@@ -90,7 +93,7 @@ const attendanceController = {
         
     }),
     filterTeacherAttendance: asyncHandler(async(req,res)=> {
-        const {startDate, endDate, status} = req.body
+        const {startDate, endDate, status} = req.query
         const filters = {teacherId: req.user}
         if(startDate || endDate){
             filters.date = {}
@@ -117,4 +120,4 @@ const attendanceController = {
 };
 
 
-module.exports = attendance
+module.exports = attendanceController

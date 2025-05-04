@@ -1,7 +1,6 @@
 const express = require("express");
 const attendanceRouter = express.Router()
-const attendanceController = require("../../controllers/teachers/attendanceCtrl")
-const { protect } = require("../../middleware/authMiddleware")
+const attendanceController = require("../../controllers/attendanceCtrl");
 
 
 // ======================Teachers===============================
@@ -12,6 +11,7 @@ attendanceRouter.post("/api/v1/teachers/attendance/:classId/:subjectID", attenda
 attendanceRouter.get("/api/v1/teachers/attendance/:subjectId", attendanceController.getStudentAttendancePerSubject)
 
 attendanceRouter.get("/api/v1/teachers/attendance", attendanceController.filterStudentAttendance)
+attendanceRouter.get("/api/v1/teachers/attendance/:classId", attendanceController.getStudentsAttendancePerClass)
 
 // ======================admin and teachers=========================
 
@@ -23,6 +23,8 @@ attendanceRouter.get("/api/v1/teachers/attendance", attendanceController.filterS
 attendanceRouter.post("/api/v1/admin/attendance", attendanceController.markTeacherAttendance);
 
 // filter attendance
-attendanceRouter.get("/api/v1/admin/attendance/:", attendanceController.filterTeacherAttendance)
+attendanceRouter.get("/api/v1/admin/attendance/", attendanceController.filterTeacherAttendance)
 
 // 
+
+module.exports = attendanceRouter

@@ -31,7 +31,7 @@ const assignmentSchema = new mongoose.Schema({
     active:{
             type: Boolean,
             required: true,
-            default: false,
+            default: true,
     },
     submittedStudents: [{
         studentID:{
@@ -40,7 +40,11 @@ const assignmentSchema = new mongoose.Schema({
         },
         assignmentDoc: {
             type: String,
-        }
+        },
+        submittedAt: {
+            type: Date,
+            default: Date.now,
+        },
     }]
 
 

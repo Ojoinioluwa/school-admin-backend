@@ -4,7 +4,7 @@ const Assignment = require('../../models/Assignment');
 
 // TODO: make changes to the getAllAssignments function to get all assignments for a specific student
 
-const assignmentController = {
+const studentsAssignmentController = {
     getAssignments: asyncHandler(async (req, res) => {
         const { SubjectId } = req.params;
         if (!SubjectId) {
@@ -34,7 +34,6 @@ const assignmentController = {
 
     submitAssignment: asyncHandler(async (req, res) => {
         const { assignmentId } = req.params;
-        const { submissionDoc } = req.body;
         if (!submissionDoc) {
             throw new Error('Submission document is required');
         }
@@ -45,7 +44,7 @@ const assignmentController = {
         // Assuming you have a field in the Assignment model to store submissions
         assignment.submissions.push({
             studentID: req.user._id,
-            submissionDoc,
+            submissionDoc: req.file.path,
         });
         await assignment.save();
     }),
@@ -77,4 +76,4 @@ const assignmentController = {
     }), 
 }
 
-module.exports = assignmentController;
+module.exports = studentsAssignmentController;

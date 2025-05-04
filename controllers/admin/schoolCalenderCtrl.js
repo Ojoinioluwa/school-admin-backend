@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const SchoolCalender = require("../../models/adminModels/SchoolCalender");
-const { eventNames } = require("../../models/studentsModels/Student");
 
 const schoolCalenderController = {
     createEvent: asyncHandler(async(req,res)=> {

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const AdminUser = require("../../models/adminModels/AdminUser");
 const Teacher = require("../../models/teachersModels/Teacher");
 const Student = require("../../models/studentsModels/Student");
+const Department = require("../../models/adminModels/Department");
 
 const countGender = (array)=> {
     const count = {};
@@ -80,6 +81,9 @@ const countGender = (array)=> {
         const numOfTeachers = teachers.length
         const studentGender = countGender(students)
         const teacherGender = countGender(teachers)
+        const numOfParents = Math.floor(numOfStudents * 1.5)
+        const numofDepartments = await Department.countDocuments();
+
 
        const studentData = [
         {name: "male", value: studentGender.male},
@@ -93,6 +97,8 @@ const countGender = (array)=> {
         res.json({
            numOfStudents,
            numOfTeachers,
+           numOfParents,
+           numofDepartments,
            studentData,
            teacherData,
         })

@@ -75,7 +75,9 @@ const levelController = {
         }
         if (teacherId) level.teacher = teacherId;
         await level.save()
-
+        res.status(200).json({
+            message: "Level updated successfully",
+        });
     }),
     leveinfo: asyncHandler(async(req,res)=> {
         const {levelId} = req.params

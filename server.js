@@ -9,6 +9,7 @@ const cors = require("cors");
 const schoolCalenderRouter = require('./routes/SchoolCalender/schoolCalenderRoute');
 const deptRouter = require('./routes/deptRoutes/deptRoute');
 const levelRouter = require('./routes/LevelRoutes/levelRoute'); 
+const attendanceRouter = require('./routes/attendanceRoutes/attendanceRoute');
 
 // TODO: make use of   .exec() in all files to follow best practice
 
@@ -38,6 +39,7 @@ app.use(cors(corsOption))
    app.use("/", levelRouter)
    app.use("/", studentsRouter)
    app.use("/", teacherRouter)
+   app.use("/", attendanceRouter)
 
 
 
