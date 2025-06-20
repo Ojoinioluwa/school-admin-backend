@@ -1,5 +1,7 @@
 const express = require("express");
 const taskController = require("../../controllers/taskCtrl");
+const isAuthenticated = require("../../middlewares/isAuth");
+const authorizeRoles = require("../../middlewares/authorizeRole");
 const taskRouter = express.Router()
 
 // get all or filter tasks for all users
@@ -18,4 +20,6 @@ taskRouter.post("/api/v1/tasks/createStudentTask", taskController.addStudentTask
 // create task for teachers
 taskRouter.post("/api/v1/tasks/createTeacherTask", taskController.addTeacherTask);
 // create task for admin
-taskRouter.post("/api/v1/tasks/createAdminTask", taskController.addAdminTask);
+taskRouter.post("/api/v1/tasks/createAdminTask", isAuthenticated, authorizeRoles("admin"),  taskController.addAdminTask);
+
+module.exports = taskRouter

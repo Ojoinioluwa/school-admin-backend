@@ -10,11 +10,12 @@ attendanceRouter.post("/api/v1/teachers/attendance/:classId/:subjectID", attenda
 // get students attendance per subject 
 attendanceRouter.get("/api/v1/teachers/attendance/:subjectId", attendanceController.getStudentAttendancePerSubject)
 
-attendanceRouter.get("/api/v1/teachers/attendance", attendanceController.filterStudentAttendance)
+
 attendanceRouter.get("/api/v1/teachers/attendance/:classId", attendanceController.getStudentsAttendancePerClass)
 
 // ======================admin and teachers=========================
-
+// authorize both teachers for this
+attendanceRouter.get("/api/v1/attendance/students", attendanceController.filterStudentAttendance)
 
 
 

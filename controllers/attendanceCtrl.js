@@ -64,58 +64,100 @@ const attendanceController = {
             attendanceCount
         })
     }),
-    filterStudentAttendance: asyncHandler(async(req,res)=> {
-        const {startDate, endDate, subjectID} = req.query
-        const {subjectId: paramSubjectId} = req.params
-        
-        const filters = {studentId: req.user};
+    filterStudentAttendance: asyncHandler(async (req, res) => {
+        const { startDate, endDate, subjectID, status } = req.query;
+        const { subjectId: paramSubjectId } = req.params;
+      
+        const filters = {  };
+      
         if (startDate || endDate) {
-            filters.date = {};
-            if (startDate) filters.date.$gte = new Date(startDate);
-            if (endDate) filters.date.$lte = new Date(endDate);
+          filters.date = {};
+          if (startDate) filters.date.$gte = new Date(startDate);
+          if (endDate) filters.date.$lte = new Date(endDate);
         }
-    const subjectId = subjectID || paramSubjectId;
-    if (subjectId) {
-        filters.subjectId = subjectId;
-    }
-    const filteredAttendance = await  studentAttendance.find(filters).sort({date: -1}).lean();
-
-    if (filteredAttendance.length === 0) {
-        res.status(404);
-        throw new Error("No attendance record found.");
-    }
-    const attendanceCount = countAttendance(filteredAttendance, "status")
-    res.status(200).json({
-        message: "Filtered Attendance fetched Successfully",
-        filteredAttendance,
-        attendanceCount
-    })
-        
-    }),
-    filterTeacherAttendance: asyncHandler(async(req,res)=> {
-        const {startDate, endDate, status} = req.query
-        const filters = {teacherId: req.user}
-        if(startDate || endDate){
-            filters.date = {}
-         if(startDate)   filters.date.$gte = new Date(startDate)
-         if(endDate)   filters.date.$lte = new Date(endDate)
+      
+        const subjectId = subjectID || paramSubjectId;
+        if (subjectId) {
+          filters.subjectId = subjectId;
         }
-    if(status) {
-        filters.status = status
-    }
-    const filteredAttendance = await TeacherAttendance.find(filters).sort({date: -1}).lean()
-    if(filteredAttendance.length === 0) {
-        res.status(404) 
-        throw new Error("Attendance record is empty");
-    }
-    const attendanceCount = countAttendance(filteredAttendance, "status")   
-
-    res.status(200).json({
-        message: "Attendnaced fetched Succesfully",
-        filteredAttendance,
-        attendanceCount
-    })
-    })
+      
+        if (status) {
+          filters.status = status.toLowerCase();
+        }
+      
+        const records = await studentAttendance.find(filters).sort({ date: -1 }).lean();
+      
+        if (!records.length) {
+          res.status(404);
+          throw new Error("No attendance record found.");
+        }
+      
+        // Group by month
+        const monthMap = {};
+        records.forEach((record) => {
+          const month = new Date(record.date).toLocaleString("default", { month: "short" }).toUpperCase();
+          if (!monthMap[month]) {
+            monthMap[month] = { month, students: 0 };
+          }
+          monthMap[month].students++;
+        });
+      
+        const monthlyData = Object.values(monthMap).sort((a, b) => {
+          const order = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+          return order.indexOf(a.month) - order.indexOf(b.month);
+        });
+      
+        res.status(200).json({
+          message: "Filtered Student Attendance fetched Successfully",
+          data: monthlyData,
+          raw: records,
+        });
+      }),
+      
+      filterTeacherAttendance: asyncHandler(async (req, res) => {
+        const { startDate, endDate, status } = req.query;
+      
+        const filters = { teacherId: req.user };
+      
+        if (startDate || endDate) {
+          filters.date = {};
+          if (startDate) filters.date.$gte = new Date(startDate);
+          if (endDate) filters.date.$lte = new Date(endDate);
+        }
+      
+        if (status) {
+          filters.status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+        }
+      
+        const records = await TeacherAttendance.find(filters).sort({ date: -1 }).lean();
+      
+        if (!records.length) {
+          res.status(404);
+          throw new Error("No attendance record found.");
+        }
+      
+        // Group by month
+        const monthMap = {};
+        records.forEach((record) => {
+          const month = new Date(record.date).toLocaleString("default", { month: "short" }).toUpperCase();
+          if (!monthMap[month]) {
+            monthMap[month] = { month, teachers: 0 };
+          }
+          monthMap[month].teachers++;
+        });
+      
+        const monthlyData = Object.values(monthMap).sort((a, b) => {
+          const order = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+          return order.indexOf(a.month) - order.indexOf(b.month);
+        });
+      
+        res.status(200).json({
+          message: "Filtered Teacher Attendance fetched Successfully",
+          data: monthlyData,
+          raw: records,
+        });
+      }),
+      
     // TODO:   pagination and indexing 
 };
 
